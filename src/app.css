@@ -24,7 +24,7 @@ body {
 }
 
 h1 {
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 700;
   padding: 16px;
 }
@@ -49,6 +49,10 @@ button {
   transition: 100ms;
   margin: 16px;
   cursor: pointer;
+  font-weight: 700;
+}
+#question-text {
+  font-size: 36px;
   font-weight: 700;
 }
 
@@ -90,10 +94,16 @@ a {
   .background-element {
     width: 162px;
   }
+  #question-text {
+    font-size: 18px;
+  }
 }
 @media only screen and (min-width: 1201px) {
   h1 {
     font-size: 48px;
+  }
+  #question-text {
+    font-size: 36px;
   }
   h2 {
     font-size: 28px;

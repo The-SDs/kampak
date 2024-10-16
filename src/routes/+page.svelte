@@ -11,7 +11,6 @@
     }
 </script>
 
-<img class="background-element" src="/media/circles.svg" alt="" />
 <div class="title-section" id="title-section">
     <h1 id="logo">kampak</h1>
     <div id="container">
@@ -34,16 +33,8 @@
     </div>
 </div>
 
-<img class="background-element" id="spring-1" src="/media/spring.svg" alt="" />
-
 <div class="information-section" id="information-section">
     <div>
-        <img
-            class="background-element"
-            id="circles-bottom"
-            src="/media/circles-2.svg"
-            alt=""
-        />
         <div>
             <h2>Jak to funguje?</h2>
             <p>
@@ -98,6 +89,12 @@
         </p>
     </div>
 </div>
+<img
+    class="background-element"
+    id="circles-bottom"
+    src="/media/circles-2.svg"
+    alt=""
+/>
 
 <style>
     .title-section {
@@ -134,6 +131,11 @@
         width: 200px;
         text-align: center;
         height: 156px;
+    }
+    #circles-bottom {
+        position: absolute;
+        bottom: -100%;
+        right: 0%;
     }
     #factors i {
         font-size: 30px;
@@ -175,10 +177,6 @@
         align-items: center;
         justify-content: center;
     }
-    .background-element {
-        position: absolute;
-        z-index: -1;
-    }
     #go-down-container {
         display: flex;
         flex-direction: column;
@@ -189,19 +187,9 @@
         left: 50%;
         transform: translateX(-50%);
     }
-    #spring-1 {
-        position: absolute;
-        right: 0%;
-        bottom: 0%;
-    }
     #go-down-button {
         background-color: transparent;
         padding: 0;
         margin: 0;
-    }
-    #circles-bottom {
-        position: absolute;
-        bottom: -100%;
-        right: 0%;
     }
 </style>
