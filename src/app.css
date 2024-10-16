@@ -54,6 +54,7 @@ button{
 
 button:hover{
     background-color: var(--muted-color);
+    color: var(--accent-color);
 }
 .background-element {
     width: 324px
@@ -71,7 +72,6 @@ a{
     color: var(--accent-color);
     font-weight: 700;
 }
-
 
 @media only screen and (max-width: 480px) {
     h1{

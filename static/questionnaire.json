@@ -2,176 +2,179 @@
     "sections": [
         {
             "name": "Základní informace",
+            "type": "open",
             "questions": [
                 {
                     "id": 1,
                     "question": "Ve kterém kraji žiješ?",
                     "answer_type": "string",
-                    "important": false
+                    "option": ""
                 },
                 {
                     "id": 2,
                     "question": "Jaké jsi měl/a výsledky z češtiny z cvičného testu z češtiny?",
-                    "answer_type": "number",
-                    "important": false
+                    "answer_type": "number"
                 },
                 {
                     "id": 3,
                     "question": "Jaké jsi měl/a výsledky z cvičného testu z matematiky?",
-                    "answer_type": "number",
-                    "important": false
+                    "answer_type": "number"
                 }
             ]
         },
         {
             "name": "Zájmy a budoucí profese",
+            "type": "close",
             "questions": [
                 {
                     "id": 4,
                     "question": "Máš jasnou představu o tom, v jakém oboru chceš v budoucnu pracovat?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 5,
                     "question": "Baví tě práce s technologiemi? (IT nebo programování)",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 6,
                     "question": "Zajímáš se o přírodní vědy? (biologie, chemie, fyzika)",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 7,
                     "question": "Vidíš se v budoucnosti v humanitních oborech? (právo, psychologie, sociální vědy)",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 8,
                     "question": "Chtěl/a bys pracovat v kreativních odvětvích? (design, umění, film)",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 9,
                     "question": "Máš zájem o práci v obchodní nebo ekonomické oblasti? (podnikání, marketing, finance)",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 10,
                     "question": "Chceš pracovat ve zdravotnictví nebo pomáhat lidem? (lékařství, záchranářství, sociální služby)",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 11,
                     "question": "Zajímá tě práce v manuálních oborech, kde můžeš využít praktické dovednosti? (strojírenství, tesařina, zedničina)",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 }
             ]
         },
         {
             "name": "Ambice studovat na vysoké škole",
+            "type": "close",
             "questions": [
                 {
                     "id": 12,
                     "question": "Plánuješ po střední škole pokračovat ve studiu na vysoké škole?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 13,
                     "question": "Vidíš vysokou školu jako klíč k dosažení tvých kariérních cílů?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 14,
                     "question": "Zajímáš se o možnosti zahraničního studia nebo výměnných programů?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 }
             ]
         },
         {
             "name": "Osobnostní preference",
+            "type": "close",
             "questions": [
                 {
                     "id": 15,
                     "question": "Baví tě pracovat na dlouhodobých projektech, kde se zaměřuješ na detail a preciznost?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 16,
                     "question": "Preferuješ práci v týmu, kde můžeš spolupracovat s ostatními na dosažení společných cílů?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 17,
                     "question": "Jsi samostatný/á a rád/a řešíš problémy vlastními silami?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 18,
                     "question": "Dáváš přednost praktické výuce a aktivitám, kde můžeš okamžitě vidět výsledky své práce?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 19,
                     "question": "Baví tě kreativní činnost, při které můžeš tvořit nové věci nebo přicházet s inovativními nápady?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 20,
                     "question": "Jsi typ člověka, který má rád strukturu, jasná pravidla a disciplínu?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 21,
                     "question": "Preferuješ spíše praktickou a akční práci než teoretické přemýšlení a plánování?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 }
             ]
         },
         {
             "name": "Dlouhodobé cíle a motivace",
+            "type": "close",
             "questions": [
                 {
                     "id": 22,
                     "question": "Chceš v budoucnu dosáhnout vyššího kariérního postavení nebo se stát expertem ve svém oboru?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 23,
                     "question": "Zajímá tě možnost založení vlastního podniku nebo práce jako freelancer?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 24,
                     "question": "Máš zájem o pracovní pozice s vysokou zodpovědností a rozhodovací pravomocí?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 },
                 {
                     "id": 25,
                     "question": "Nevadí ti pracovat pod tlakem?",
                     "answer_type": "boolean",
-                    "important": false
+                    "weight": 3
                 }
             ]
         }

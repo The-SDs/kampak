@@ -50,7 +50,7 @@
                 Vyplníš jednoduchý dotazník, několik osobních údajů a mi pro
                 tebe vybereme ty nejvhodnější varianty škol podle tvých zájmů,
                 preferencí a osobnosti. Na stránkách <a
-                    href="https://procvicprijimacky.cermat.cz/">CERMATu</a
+                    href="https://procvicprijimacky.cermat.cz/" target="_blank">CERMATu</a
                 >
                 si můžeš udělat cvičné testy z matematiky a češtiny, jejichž výsledky
                 můžeš přidat do dotazníku. Na základě tvých odpovědí a výsledků ti
@@ -81,7 +81,7 @@
             <span>Ambice pokračovat na vysokou školu</span>
         </div>
         <div>
-            <i class="fa-regular fa-file-lines"></i>
+            <i class="fa-solid fa-file-lines"></i>
             <span>Výsledky z cvičných testů</span>
         </div>
     </div>
@@ -128,9 +128,11 @@
     }
     #factors div {
         display: flex;
+        justify-content: space-around;
         flex-direction: column;
         width: 200px;
         text-align: center;
+        height: 156px;
     }
     #factors i {
         font-size: 30px;
@@ -143,6 +145,15 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: 100ms;
+    }
+    #factors i:hover{
+        font-size: 68px;
+        text-indent: -16px;
+        padding: 2px;
+        text-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        color: var(--accent-color);
+        background-color: var(--muted-color);
     }
     #factors span {
         font-size: 16px;
