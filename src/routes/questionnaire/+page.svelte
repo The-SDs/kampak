@@ -1,33 +1,40 @@
 <script>
-    import Question from "$lib/components/Question.svelte";
-    import questionnaire from "$lib/questionnaire.json";
+  import Section from "$lib/components/Section.svelte";
+  import questionnaire from "$lib/questionnaire.json";
+  let { sections } = questionnaire;
+  let activeSection = 0;
+  let sectionActivities = [];
 
-    let entries = Object.entries(questionnaire);
+  $: sectionActivities = sections.map(() => false);
+  sectionActivities[activeSection] = true;
+
+  function nextSection() {
+    if (activeSection < sections.length - 1) {
+      sectionActivities[activeSection] = false;
+      activeSection += 1;
+      sectionActivities[activeSection] = true;
+    }
+  }
 </script>
 
-<div id="questionnaire">
-    {#each entries as [key, value]} 
-        <p>{value}</p>
-    {/each}
-    <Question
-        type="open"
-        content="Jsi vědomý o tom, že se můžeš otevřít kdysi?"
-        weight="3"
+<form id="questions" action="" method="post">
+  {#each sections as { type, name, questions }, index}
+    <Section
+      {type}
+      {name}
+      {questions}
+      active={index == activeSection}
+      {nextSection}
+      section={index}
     />
-    <form id="quests" action="" method="post">
-        <input type="checkbox" name="importance" id="importance-button" />
-        <button id="no-button">Ne</button>
-        <button id="dont-know-button">Nevím</button>
-        <button id="yes-button">Ano</button>
-    </form>
-</div>
+  {/each}
+</form>
 
 <style>
-    #questionnaire {
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    button {
-        width: 100px;
-    }
+  #questions {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
 </style>
