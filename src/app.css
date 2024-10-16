@@ -1,12 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 *{
-    --primary-color: "";
+    --primary-color: #171934;
 
-    --secondary-color: "";
+    --text-color: #ffffff;
 
-    --text-color: "";
+    --subtext-color: color-mix(var(--text-color), transparent, 50%);
 
-    --accent-color: "";
+    --accent-color: #29AAE0;
 
-    --muted-color: "";
+    --muted-color: #2368AE;
 
+    font-family: "Montserrat";
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    border: none;
+    color: var(--text-color);
+}
+
+body{
+    background-color: var(--primary-color);
+    overflow-x: hidden;
+}
+
+h1{
+    font-size: 48px;
+    font-weight: 700;
+    padding: 16px;
+}
+h2{
+    font-size: 24px;
+    font-weight: 700;
+    padding: 16px;
+}
+p{
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--subtext-color);
+    padding: 16px;
+}
+button{
+    padding: 8px 16px;
+    font-size: 12px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    transition: 100ms;
+    margin: 16px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+button:hover{
+    background-color: var(--muted-color);
+}
+.background-element {
+    width: 324px
+}
+i{
+    font-size: 24px;
+    margin-right: 8px;
+}
+span{
+    font-size: 12px;
+    margin: 8px;
+    text-align: center ;
+}
+a{
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+
+@media only screen and (max-width: 480px) {
+    h1{
+        font-size: 28px;
+    }
+    h2{
+        font-size: 16px;
+    }
+    p{
+        font-size: 12px;
+    }
+    button{
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+    .background-element {
+        width: 162px;
+    }
+}
+@media only screen and (min-width: 1201px) {
+    h1{
+        font-size: 48px;
+    }
+    h2{
+        font-size: 28px;
+    }
+    p{
+        font-size: 16px;
+    }
+    button{
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    .background-element {
+        width: 486px;
+    }
 }
