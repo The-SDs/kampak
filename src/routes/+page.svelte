@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
     import { goto } from "$app/navigation";
     import "@fortawesome/fontawesome-free/css/all.css";
 
     // Scroll to specific section function
-    function scrollToSection(sectionId) {
+    function scrollToSection(sectionId: string) {
         const section = document.querySelector(sectionId);
         if (section) {
             section.scrollIntoView({ behavior: "smooth" });
@@ -50,7 +50,8 @@
                 Vyplníš jednoduchý dotazník, několik osobních údajů a mi pro
                 tebe vybereme ty nejvhodnější varianty škol podle tvých zájmů,
                 preferencí a osobnosti. Na stránkách <a
-                    href="https://procvicprijimacky.cermat.cz/" target="_blank">CERMATu</a
+                    href="https://procvicprijimacky.cermat.cz/"
+                    target="_blank">CERMATu</a
                 >
                 si můžeš udělat cvičné testy z matematiky a češtiny, jejichž výsledky
                 můžeš přidat do dotazníku. Na základě tvých odpovědí a výsledků ti
@@ -147,7 +148,7 @@
         align-items: center;
         transition: 100ms;
     }
-    #factors i:hover{
+    #factors i:hover {
         font-size: 68px;
         text-indent: -16px;
         padding: 2px;
