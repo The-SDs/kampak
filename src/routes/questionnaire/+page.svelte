@@ -1,7 +1,8 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
   import questionnaire from "$lib/questionnaire.json";
   import "@fortawesome/fontawesome-free/css/all.css";
-  import { onMount } from "svelte"; // Import onMount for handling lifecycle
+    import type { PageData } from "../$types";
   let { sections } = questionnaire;
 
   $: sectionIndex = 0;
@@ -93,11 +94,21 @@
     for (let [key, value] of Object.entries(data)) {
       body += `${key}=${value}&`;
     }
-    await fetch((event.currentTarget as EventTarget & HTMLFormElement).action, {
+    const response = await fetch((event.currentTarget as EventTarget & HTMLFormElement).action, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body,
     });
+
+    const res = await response.json();
+
+    let query = "";
+    for (let entry of res) {
+      const [ico, prctnt] = Object.entries(entry);
+      query += `${ico}=${prctnt}&`;
+    }
+
+    goto(`/results?${query}`);
   }
 
   function toggleImportant(event: Event) {

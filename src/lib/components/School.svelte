@@ -1,60 +1,80 @@
 <script lang="ts">
-    export let nazev: string = "";
-    export let ico: string = "";
-    export let sektor_typ: string = "";
-    export let skolne: string = "";
-    export let obor_kod: string = "";
-    export let obor_nazev: string = "";
-    export let obor_delka: string = "";
-    export let obor_forma: string = "";
-    export let obor_druh: string = "";
-    export let adresa_kraj: string = "";
-    export let adresa_okres: string = "";
-    export let adresa_orp: string = "";
-    export let adresa_obec: string = "";
-    export let adresa_psc: string = "";
-    export let adresa_ulice: string = "";
-    export let adresa_typ_cisla_domovniho: string = "";
-    export let adresa_cislo_domovni: string = "";
-    export let adresa_cislo_orientacni: string | null = null; // Může být null
-    export let web: string = "";
-    export let ozp: boolean = false; // Prázdný string pro boolean
-    export let prohlidka: boolean = false; // Prázdný string pro boolean
-    export let geo_longitude: string = "";
-    export let geo_latitude: string = "";
-    export let prijimaci_zkouska: string = "";
-    export let prijimaci_zkouska_nabidnuto: string = "";
-    export let prijimaci_zkouska_prihlasky: string = "";
-    export let prijimaci_zkouska_prijati: string = "";
+    interface School {
+        nazev: string,
+        ico: number,
+        sektor: Object,
+        obor: {
+            nazev: string,
+            druh: string,
+            forma: string
+        },
+        adresa: {
+            ulice: string,
+            typ_cisla_domovniho: string,
+            cislo_domovni: string,
+            cislo_orientacni?: string,
+            obec: string,
+            okres: string,
+            kraj: string,
+            psc: string
+        },
+        web: string,
+        ozp: boolean,
+        prohlidka: boolean,
+        geo: number,
+        prijimaci_zkouska: string,
+        prijimaci_zkouska_pocty: {
+            nabidnuto: number,
+            prihlasky: number,
+            prijati: number
+        }
+    }
+
+    export let ico: number = 0;
+    let data: School | null = null;
+
+    async function getSchool(ico: number): Promise<School> {
+        const response = await fetch(`/schools/${ico.toString()}`);
+        return await response.json() as School;
+    }
+
+    $: if (ico) {
+        getSchool(ico).then(school => {
+            data = school;
+        }).catch(err => {
+            console.error("Failed to fetch school data:", err);
+        });
+    }
 </script>
 
 <div id="school">
-    <h3>{nazev}</h3>
-    <div id="container">
-        <div id="section">
-            <span class="element-title">Obor:</span>
-            <span>název: {obor_nazev}</span>
-            <span>druh: {obor_druh}</span>
-            <span>forma{obor_forma}</span>
+    {#if data}
+        <h3>{data?.nazev}</h3>
+        <div id="container">
+            <div id="section">
+                <span class="element-title">Obor:</span>
+                <span>název: {data?.obor?.nazev}</span>
+                <span>druh: {data?.obor?.druh}</span>
+                <span>forma: {data?.obor?.forma}</span>
+            </div>
+            <div id="section">
+                <span class="element-title">{data?.prijimaci_zkouska}</span>
+                <span>místa: {data?.prijimaci_zkouska_pocty?.nabidnuto}</span>
+                <span>přihlášky: {data?.prijimaci_zkouska_pocty?.prihlasky}</span>
+                <span>přijato: {data?.prijimaci_zkouska_pocty?.prijati}</span>
+            </div>
         </div>
-        <div id="section">
-            <span class="element-title">{prijimaci_zkouska}</span>
-            <span>místa: {prijimaci_zkouska_nabidnuto}</span>
-            <span>přihlášky: {prijimaci_zkouska_prihlasky}</span>
-            <span>přijato: {prijimaci_zkouska_prijati}</span>
+        <div id="contact">
+            <span><a href={data?.web}>{data?.web}</a></span>
+            <span class="address">
+                {data?.adresa?.ulice} {data?.adresa?.typ_cisla_domovniho} {data?.adresa?.cislo_domovni}
+                {data?.adresa?.cislo_orientacni ? `/${data?.adresa?.cislo_orientacni}` : ""}, 
+                {data?.adresa?.obec}, {data?.adresa?.okres}, {data?.adresa?.kraj}, {data?.adresa?.psc}
+            </span>
         </div>
-    </div>
-    <div id="contact">
-        <span><a href="">{web}</a></span>
-        <span class="address">
-            {adresa_ulice}
-            {adresa_typ_cisla_domovniho}
-            {adresa_cislo_domovni}
-            {adresa_cislo_orientacni ? adresa_cislo_orientacni : ""},
-            {adresa_obec}, {adresa_okres}, {adresa_kraj}, {adresa_psc}
-        </span>
-        <!-- Přidána adresa -->
-    </div>
+    {:else}
+        <p>Loading school data...</p>
+    {/if}
 </div>
 
 <style>

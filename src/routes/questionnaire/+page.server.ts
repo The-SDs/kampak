@@ -48,10 +48,9 @@ export const actions: Actions = {
         },
       ]);
       const response = result.response.text();
-      console.log(response.substring(7, response.length - 3));
       return {
         success: true,
-        message: JSON.parse(response.substring(7, response.length - 3)),
+        message: JSON.parse(decodeURI(response.substring(7, response.length - 3))),
       };
     } catch (error) {
       console.log(error);
