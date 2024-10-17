@@ -97,6 +97,9 @@
 />
 
 <style>
+    #circles-bottom{
+        z-index: -1;
+    }
     .title-section {
         height: 100vh;
     }
