@@ -1,7 +1,7 @@
 <script lang="ts">
   import questionnaire from "$lib/questionnaire.json";
   import "@fortawesome/fontawesome-free/css/all.css";
-  import { parse } from "svelte/compiler";
+  import { onMount } from "svelte"; // Import onMount for handling lifecycle
   let { sections } = questionnaire;
 
   $: sectionIndex = 0;
@@ -13,8 +13,46 @@
   $: placeholder = question.placeholder;
   let isFinal = false;
 
+  // Address suggestion functionality
+  let address = ""; // Bind the address value
+  let suggestions: string[] = []; // Array to hold suggestions
+
+  async function getSuggestions() {
+    if (address.length < 3) {
+      suggestions = [];
+      return;
+    }
+
+    const response = await fetch(
+      `/autocomplete?input=${encodeURIComponent(address)}`,
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      suggestions = data.predictions.map(
+        (prediction: { description: string }) => prediction.description,
+      );
+    } else {
+      suggestions = [];
+    }
+  }
+
+  function selectAddress(selectedAddress: string) {
+    address = selectedAddress;
+    suggestions = [];
+  }
+
   let data: Record<string, any> = {};
   let isImportant = false;
+
+  function goBack() {
+    if (questionIndex > 0) {
+      questionIndex--;
+    } else if (sectionIndex > 0) {
+      sectionIndex--;
+      questionIndex = sections[sectionIndex].questions.length - 1;
+    }
+  }
 
   function nextQuestion(selectedOption: string) {
     data[`${sectionIndex}-${questionIndex}`] = selectedOption;
@@ -32,7 +70,8 @@
   function submitValue() {
     let isValid = false;
     if (question.type == "address") {
-      if (value.length < 128) {
+      if (address.length < 128) {
+        // Check address length instead of value
         isValid = true;
       }
     }
@@ -43,8 +82,9 @@
       }
     }
     if (isValid) {
-      nextQuestion(value);
-      value = "";
+      nextQuestion(question.type == "address" ? address : value); // Use address if type is address
+      address = ""; // Reset address after submission
+      value = ""; // Reset value after submission
     }
   }
 
@@ -92,9 +132,9 @@
       {/if}
     </div>
   </form>
-  <button id="back-button"
-    ><i class="fa-solid fa-angle-left"></i> předchozí otázka</button
-  >
+  <button id="back-button" type="button" on:click={goBack}>
+    <i class="fa-solid fa-angle-left"></i> předchozí otázka
+  </button>
 
   {#if !isFinal}
     {#if isOpen}
@@ -130,13 +170,37 @@
       </div>
     {:else}
       <div class="selection">
-        <input
-          {placeholder}
-          type="text"
-          name="address"
-          id="address"
-          bind:value
-        />
+        {#if question.type == "address"}
+          <input
+            class="info-input"
+            type="text"
+            placeholder="Zadejte adresu"
+            bind:value={address}
+            on:input={getSuggestions}
+          />
+          {#if suggestions.length > 0}
+            <ul>
+              {#each suggestions as suggestion}
+                <button
+                  on:click={() => selectAddress(suggestion)}
+                  class="suggestion-button"
+                  type="button"
+                >
+                  {suggestion}
+                </button>
+              {/each}
+            </ul>
+          {/if}
+        {:else}
+          <input
+            class="info-input"
+            id="number-input"
+            {placeholder}
+            type="text"
+            name="inputValue"
+            bind:value
+          />
+        {/if}
         <button id="next-button" type="button" on:click={() => submitValue()}
           >Pokračovat</button
         >
@@ -146,7 +210,6 @@
 </div>
 
 <style>
-  /* Skryjeme výchozí checkbox */
   .custom-checkbox input[type="checkbox"] {
     opacity: 0;
     cursor: pointer;
@@ -161,14 +224,12 @@
     height: 100dvh;
   }
 
-  /* Vytvoříme kruhový tvar pro náš vlastní checkbox */
   .custom-checkbox {
     display: inline-block;
     position: relative;
     width: 24px;
     height: 24px;
   }
-
   #checkbox-text {
     margin-left: 16px;
     font-size: 16px;
@@ -186,21 +247,20 @@
     height: 20px;
     border-radius: 50%;
     background-color: transparent;
-    border: 2px solid #ffffff; /* Okraj checkboxu */
+    border: 2px solid #ffffff;
     transition: 0.1s;
   }
 
-  /* Při zaškrtnutí zobrazíme malou tečku */
   .custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
     content: "";
     position: absolute;
-    width: 13px; /* Velikost tečky */
+    width: 13px;
     height: 13px;
-    background-color: var(--accent-color); /* Barva tečky */
+    background-color: var(--accent-color);
     border-radius: 50%;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Centrování tečky */
+    transform: translate(-50%, -50%);
   }
 
   #no-button {
@@ -231,7 +291,6 @@
   #unknown-button:hover {
     background-color: var(--muted-color);
   }
-
   /* Možnosti pro tlačítka */
   #options button {
     margin: 0 8px;
@@ -251,7 +310,6 @@
     justify-content: center;
     align-items: center;
   }
-
   #questions {
     min-width: 300px;
     max-width: 800px;
@@ -268,6 +326,10 @@
   #done-container {
     display: flex;
     flex-direction: column;
+  }
+
+  .info-input {
+    width: 100px;
   }
 
   #options {
@@ -289,6 +351,38 @@
   #back-button i {
     font-size: 14px;
   }
+
+  /* Styles for suggestions */
+  ul {
+    z-index: 999;
+    position: absolute;
+    list-style: none;
+    padding: 8px;
+    margin: 0;
+    max-height: 200px;
+    max-width: 600px;
+    overflow: hidden;
+    backdrop-filter: Blur(20px);
+    background-color: color-mix(var(--primary-color), trasparent, 50%);
+    border-radius: 5px;
+  }
+  .suggestion-button {
+    width: 100%;
+    text-align: left;
+    margin: 2px 0;
+  }
+
+  .selection {
+  }
+
+  /* Styly pro input */
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
   @media (max-width: 480px) {
     #options {
       height: 220px;
