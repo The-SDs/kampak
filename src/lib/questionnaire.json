@@ -5,19 +5,19 @@
       "type": "open",
       "questions": [
         {
-          "question": "Ve kterém kraji žiješ?",
-
-          "weight": "1"
+          "question": "Zadejte svoji adresu.",
+          "placeholder": "Náměstí Spánkové Deprivace 11",
+          "type" : "address"
         },
         {
           "question": "Jaké jsi měl/a výsledky z češtiny z cvičného testu z češtiny?",
-
-          "weight": "1"
+          "placeholder": "46",
+          "type" : "points"
         },
         {
           "question": "Jaké jsi měl/a výsledky z cvičného testu z matematiky?",
-
-          "weight": "1"
+          "placeholder": "23",
+          "type" : "points"
         }
       ]
     },

@@ -1,12 +1,16 @@
 <script lang="ts">
   import questionnaire from "$lib/questionnaire.json";
   import "@fortawesome/fontawesome-free/css/all.css";
+  import { parse } from "svelte/compiler";
   let { sections } = questionnaire;
 
   $: sectionIndex = 0;
   $: questionIndex = 0;
   $: section = sections[sectionIndex];
   $: question = section.questions[questionIndex];
+  $: isOpen = section.type == "close";
+  $: value = "";
+  $: placeholder = question.placeholder;
   let isFinal = false;
 
   let data: Record<string, any> = {};
@@ -23,6 +27,25 @@
     }
 
     isImportant = false; // Reset the checkbox state
+  }
+
+  function submitValue() {
+    let isValid = false;
+    if (question.type == "address") {
+      if (value.length < 128) {
+        isValid = true;
+      }
+    }
+    if (question.type == "points") {
+      let parsedFloat = parseFloat(value);
+      if (!isNaN(parsedFloat) && parsedFloat > 0 && parsedFloat <= 50) {
+        isValid = true;
+      }
+    }
+    if (isValid) {
+      nextQuestion(value);
+      value = "";
+    }
   }
 
   async function submit(event: Event) {
@@ -74,34 +97,51 @@
   >
 
   {#if !isFinal}
-    <div id="options">
-      <div id="option-buttons">
-        <button
-          id="yes-button"
-          type="button"
-          on:click={() => nextQuestion("Ano")}>Ano</button
-        >
-        <button
-          id="unknown-button"
-          type="button"
-          on:click={() => nextQuestion("Nevím")}>Nevím</button
-        >
-        <button id="no-button" type="button" on:click={() => nextQuestion("Ne")}
-          >Ne</button
+    {#if isOpen}
+      <div id="options">
+        <div id="option-buttons">
+          <button
+            id="yes-button"
+            type="button"
+            on:click={() => nextQuestion("Ano")}>Ano</button
+          >
+          <button
+            id="unknown-button"
+            type="button"
+            on:click={() => nextQuestion("Nevím")}>Nevím</button
+          >
+          <button
+            id="no-button"
+            type="button"
+            on:click={() => nextQuestion("Ne")}>Ne</button
+          >
+        </div>
+        <label id="interest-container">
+          <div class="custom-checkbox">
+            <input
+              type="checkbox"
+              on:change={toggleImportant}
+              bind:checked={isImportant}
+            />
+            <span class="checkmark"></span>
+          </div>
+          <span id="checkbox-text">Je to pro mě důležité</span>
+        </label>
+      </div>
+    {:else}
+      <div class="selection">
+        <input
+          {placeholder}
+          type="text"
+          name="address"
+          id="address"
+          bind:value
+        />
+        <button id="next-button" type="button" on:click={() => submitValue()}
+          >Pokračovat</button
         >
       </div>
-      <label id="interest-container">
-        <div class="custom-checkbox">
-          <input
-            type="checkbox"
-            on:change={toggleImportant}
-            bind:checked={isImportant}
-          />
-          <span class="checkmark"></span>
-        </div>
-        <span id="checkbox-text">Je to pro mě důležité</span>
-      </label>
-    </div>
+    {/if}
   {/if}
 </div>
 
