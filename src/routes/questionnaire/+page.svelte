@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
+  import { goto } from "$app/navigation";
   import questionnaire from "$lib/questionnaire.json";
   import "@fortawesome/fontawesome-free/css/all.css";
-    import type { PageData } from "../$types";
+  // import type { PageData } from "../$types";
   let { sections } = questionnaire;
 
   $: sectionIndex = 0;
@@ -11,7 +11,7 @@
   $: question = section.questions[questionIndex];
   $: isOpen = section.type == "close";
   $: value = "";
-  $: placeholder = question.placeholder;
+  $: placeholder = "placeholder" in question ? question.placeholder : "";
   let isFinal = false;
 
   // Address suggestion functionality
@@ -25,13 +25,13 @@
     }
 
     const response = await fetch(
-      `/autocomplete?input=${encodeURIComponent(address)}`,
+      `/autocomplete?input=${encodeURIComponent(address)}`
     );
 
     if (response.ok) {
       const data = await response.json();
       suggestions = data.predictions.map(
-        (prediction: { description: string }) => prediction.description,
+        (prediction: { description: string }) => prediction.description
       );
     } else {
       suggestions = [];
@@ -70,20 +70,22 @@
 
   function submitValue() {
     let isValid = false;
-    if (question.type == "address") {
+    if ("type" in question && question.type == "address") {
       if (address.length < 128) {
         // Check address length instead of value
         isValid = true;
       }
     }
-    if (question.type == "points") {
+    if ("type" in question && question.type == "points") {
       let parsedFloat = parseFloat(value);
       if (!isNaN(parsedFloat) && parsedFloat > 0 && parsedFloat <= 50) {
         isValid = true;
       }
     }
     if (isValid) {
-      nextQuestion(question.type == "address" ? address : value); // Use address if type is address
+      nextQuestion(
+        "type" in question && question.type == "address" ? address : value
+      ); // Use address if type is address
       address = ""; // Reset address after submission
       value = ""; // Reset value after submission
     }
@@ -92,23 +94,38 @@
   async function submit(event: Event) {
     let body: string = "";
     for (let [key, value] of Object.entries(data)) {
-      body += `${key}=${value}&`;
+      body += `${key}=${encodeURIComponent(value)}&`;
     }
-    const response = await fetch((event.currentTarget as EventTarget & HTMLFormElement).action, {
+    body = body.slice(0, -1); // Remove the trailing '&'
+
+    const actionUrl = (event.currentTarget as EventTarget & HTMLFormElement)
+      .action;
+
+    const response = await fetch(actionUrl, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body,
     });
 
-    const res = await response.json();
+    if (response.ok) {
+      const responseData = await response.json();
+      let query = "";
+      const message = responseData.message ?? [];
+      for (let entry of message) {
+        const [ico, prctnt] = Object.entries(entry)[0] as [
+          string,
+          string | number | boolean,
+        ];
+        query += `${encodeURIComponent(ico)}=${encodeURIComponent(prctnt)}&`;
+      }
+      query = query.slice(0, -1); // Remove the trailing '&'
 
-    let query = "";
-    for (let entry of res) {
-      const [ico, prctnt] = Object.entries(entry);
-      query += `${ico}=${prctnt}&`;
+      console.log("Query string:", query); // Log the query string
+
+      await goto(`/results?${query}`);
+    } else {
+      console.error("Failed to submit the form");
     }
-
-    goto(`/results?${query}`);
   }
 
   function toggleImportant(event: Event) {
@@ -181,7 +198,7 @@
       </div>
     {:else}
       <div class="selection">
-        {#if question.type == "address"}
+        {#if "type" in question && question.type == "address"}
           <input
             class="info-input"
             type="text"
@@ -381,9 +398,6 @@
     width: 100%;
     text-align: left;
     margin: 2px 0;
-  }
-
-  .selection {
   }
 
   /* Styly pro input */
